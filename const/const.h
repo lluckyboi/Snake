@@ -5,7 +5,7 @@
 #ifndef SNAKE_CONST_H
 #define SNAKE_CONST_H
 
-const int Default_Height=800;
-const int Default_Weight=1080;
+const int Default_Height=500;
+const int Default_Weight=980;
 
 #endif //SNAKE_CONST_H
