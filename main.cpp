@@ -11,5 +11,6 @@ void DrawMenu(){
 
 int main() {
     DrawMenu();
+    system("pause");
     return 0;
 }
