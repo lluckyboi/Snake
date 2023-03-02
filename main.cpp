@@ -6,11 +6,10 @@
 void DrawMenu(){
     Menu *menu =new Menu(0, Default_Width, Default_Height);
     menu->Draw();
-    menu->Refresh();
+    menu->Start();
 }
 
 int main() {
     DrawMenu();
-    system("pause");
     return 0;
 }

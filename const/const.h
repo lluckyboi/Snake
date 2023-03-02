@@ -12,4 +12,5 @@ const int Default_BK_Color=0xBFE6BA;
 const int Default_Bottom_Color=0x003973;
 
 const char * Default_Font="Arial BLACK";
+const int Selected_Font_Color=0xB79891;
 #endif //SNAKE_CONST_H

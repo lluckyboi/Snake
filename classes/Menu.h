@@ -33,8 +33,7 @@ public:
     };
 
     void Draw();
-
-    void Refresh();
+    void Start();
     void PrintMenu();
 };
 
@@ -88,6 +87,7 @@ void Menu::PrintMenu(){
 
    }
 }
+
 //绘制菜单
 void Menu::Draw() {
     if(Screen_Mode==2){
@@ -106,12 +106,12 @@ void Menu::Draw() {
 }
 
 //绘制按钮
-void DrawBottom(int x,int y,int w,int h,char* text){
+void DrawBottom(int x,int y,int w,int h,char* text,int bt_color,int font_color){
     //设置背景模式-透明
     setbkmode(TRANSPARENT);
 
     //设置填充色为默认填充色
-    setfillcolor(Default_Bottom_Color);
+    setfillcolor(bt_color);
 
     //绘制圆角矩阵
     fillroundrect(x,y,x+w,y+h,10,10);
@@ -120,7 +120,7 @@ void DrawBottom(int x,int y,int w,int h,char* text){
     LOGFONT f;
     gettextstyle(&f);
     settextstyle(30,0,Default_Font);
-    settextcolor(WHITE);
+    settextcolor(font_color);
     f.lfQuality = ANTIALIASED_QUALITY;//打磨字体 使字体变得更加光滑
 
     //绘制文字
@@ -129,10 +129,47 @@ void DrawBottom(int x,int y,int w,int h,char* text){
     outtextxy(tx, ty, text);
 }
 
+//按钮消息
+void BottomMsg(){
+    ExMessage msg; //声明一个消息指针
+    while (true) {
+        //鼠标行为
+        if (peekmessage(&msg, EM_MOUSE)) {
+            switch (msg.message)
+            {
+                //鼠标按键
+                case WM_LBUTTONDOWN:
+                    //开始游戏
+                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)
+                    //设置游戏
+                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 200 && msg.y <= 200 + 40)
+                        outtextxy(0,0,"wait to develop");
+                    //退出游戏
+                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 320 && msg.y <= 320 + 40)
+                        return;
+                //鼠标悬停
+                case WM_MOUSEMOVE:
+                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)
+                        DrawBottom(400,80,180,40,"start game",Default_Bottom_Color,Selected_Font_Color);
+                    else if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 200 && msg.y <= 200 + 40)
+                        DrawBottom(400,200,180,40,"setting game",Default_Bottom_Color,Selected_Font_Color);
+                    else if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 320 && msg.y <= 320 + 40)
+                        DrawBottom(400,320,180,40,"quit game",Default_Bottom_Color,Selected_Font_Color);
+                    else {
+                        DrawBottom(400,80,180,40,"start game",Default_Bottom_Color,WHITE);
+                        DrawBottom(400,200,180,40,"setting game",Default_Bottom_Color,WHITE);
+                        DrawBottom(400,320,180,40,"quit game",Default_Bottom_Color,WHITE);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
-
-//刷新窗口
-void Menu::Refresh() {
+}
+//开始窗口
+void Menu::Start() {
     //检测任意按下的任意键 不带回显
     getch();
     //隐藏cmd
@@ -145,11 +182,14 @@ void Menu::Refresh() {
     }
 
     //绘制开始按钮
-    DrawBottom(400,80,180,40,"start game");
+    DrawBottom(400,80,180,40,"start game",Default_Bottom_Color,WHITE);
     //绘制设置按钮
-    DrawBottom(400,200,180,40,"setting game");
+    DrawBottom(400,200,180,40,"setting game",Default_Bottom_Color,WHITE);
     //绘制退出按钮
-    DrawBottom(400,320,180,40,"quit game");
+    DrawBottom(400,320,180,40,"quit game",Default_Bottom_Color,WHITE);
+
+    //开始获取行为消息
+    BottomMsg();
 }
 
 
