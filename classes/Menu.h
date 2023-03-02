@@ -94,6 +94,8 @@ void Menu::Draw() {
         //窗口模式
         ShowWindow(target,SW_HIDE);
         initgraph(width, height, 0);
+        setbkcolor(Default_BK_Color);
+        cleardevice();
     }else {
         //全屏模式
         full_screen();
@@ -103,16 +105,52 @@ void Menu::Draw() {
     PrintMenu();
 }
 
+//绘制按钮
+void DrawBottom(int x,int y,int w,int h,char* text){
+    //设置背景模式-透明
+    setbkmode(TRANSPARENT);
+
+    //设置填充色为默认填充色
+    setfillcolor(Default_Bottom_Color);
+
+    //绘制圆角矩阵
+    fillroundrect(x,y,x+w,y+h,10,10);
+
+    //字体设置
+    LOGFONT f;
+    gettextstyle(&f);
+    settextstyle(30,0,Default_Font);
+    settextcolor(WHITE);
+    f.lfQuality = ANTIALIASED_QUALITY;//打磨字体 使字体变得更加光滑
+
+    //绘制文字
+    int tx = x + (w - textwidth(text)) / 2;
+    int ty = y + (h - textheight(text)) / 2;
+    outtextxy(tx, ty, text);
+}
+
+
+
 //刷新窗口
 void Menu::Refresh() {
     //检测任意按下的任意键 不带回显
     getch();
-
+    //隐藏cmd
     ShowWindow(target,SW_HIDE);
+
     if(Screen_Mode==0){
-        initgraph(Default_Weight,Default_Height,0);
+        initgraph(Default_Width, Default_Height, 0);
+        setbkcolor(Default_BK_Color);
+        cleardevice();
     }
-    //清屏
-    system("cls");
+
+    //绘制开始按钮
+    DrawBottom(400,80,180,40,"start game");
+    //绘制设置按钮
+    DrawBottom(400,200,180,40,"setting game");
+    //绘制退出按钮
+    DrawBottom(400,320,180,40,"quit game");
 }
+
+
 #endif //SNAKE_MENU_H

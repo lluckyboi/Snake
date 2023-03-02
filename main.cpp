@@ -4,7 +4,7 @@
 
 //绘制菜单
 void DrawMenu(){
-    Menu *menu =new Menu(0,Default_Weight,Default_Height);
+    Menu *menu =new Menu(0, Default_Width, Default_Height);
     menu->Draw();
     menu->Refresh();
 }
