@@ -1,15 +1,8 @@
 #include <iostream>
-#include "classes/Menu.h"
-#include "const/const.h"
-
-//绘制菜单
-void DrawMenu(){
-    Menu *menu =new Menu(0, Default_Width, Default_Height);
-    menu->Draw();
-    menu->Start();
-}
+#include "classes/Game.h"
 
 int main() {
-    DrawMenu();
+    Game *game =new Game(0);
+    game->Start();
     return 0;
 }
