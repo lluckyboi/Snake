@@ -32,9 +32,12 @@ void Game::Start(){
     //绘制地图
     Map *map=new Map();
     map->Draw();
+    //todo 生成糖果
 
+    //初始化贪吃蛇
     Snake *snake = new Snake();
     while(1){
+        //todo 添加转向逻辑
         if(!snake->Move(455,255)){
             //游戏结束
             settextcolor(RED);

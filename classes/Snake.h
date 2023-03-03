@@ -118,7 +118,7 @@ bool Snake::Move(int candyx,int candyy) {
     diry=body[0][3];
     //判断是否吃到糖果
     if(x>=candyx-5&&x<=candyx+5&&y>=candyy-5&y<=candyy+5) {
-        //清除糖果
+        //todo 清除糖果
         GrowUp();
     }
     return true;
