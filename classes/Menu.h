@@ -9,6 +9,7 @@
 #include <iostream>
 #include <conio.h>
 #include <graphics.h>
+#include "Map.h"
 #include "../const/const.h"
 
 #define FO(i,n) for(int i=0;i<n;i++)
@@ -33,7 +34,7 @@ public:
     };
 
     void Draw();
-    void Start();
+    bool Start();
     void PrintMenu();
 };
 
@@ -130,7 +131,7 @@ void DrawBottom(int x,int y,int w,int h,char* text,int bt_color,int font_color){
 }
 
 //按钮消息
-void BottomMsg(){
+bool BottomMsg(){
     ExMessage msg; //声明一个消息指针
     while (true) {
         //鼠标行为
@@ -141,12 +142,15 @@ void BottomMsg(){
                 case WM_LBUTTONDOWN:
                     //开始游戏
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)
+                    {
+                        return true;
+                    }
                     //设置游戏
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 200 && msg.y <= 200 + 40)
                         outtextxy(0,0,"wait to develop");
                     //退出游戏
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 320 && msg.y <= 320 + 40)
-                        return;
+                        return false;
                 //鼠标悬停
                 case WM_MOUSEMOVE:
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)
@@ -169,7 +173,7 @@ void BottomMsg(){
 
 }
 //开始窗口
-void Menu::Start() {
+bool Menu::Start() {
     //检测任意按下的任意键 不带回显
     getch();
     //隐藏cmd
@@ -189,7 +193,7 @@ void Menu::Start() {
     DrawBottom(400,320,180,40,"quit game",Default_Bottom_Color,WHITE);
 
     //开始获取行为消息
-    BottomMsg();
+    return BottomMsg();
 }
 
 
