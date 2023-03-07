@@ -15,7 +15,7 @@ const char * Default_Font="Arial BLACK";
 const int Selected_Font_Color=0xB79891;
 
 const int Snake_Head_Color=0xd6ae7b;
-const int Snake_Body_Color=0xC5796D;
+const int Snake_Body_Color=0xd6ae7b;
 
 //坐标左偏移度
 int P_Left=250;

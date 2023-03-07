@@ -57,7 +57,7 @@ void Snake::GrowUp(){
         //设置填充色
         setfillcolor(Snake_Body_Color);
         //绘制
-        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,6,6);
+        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,0,0);
     }else{
         auto ed1=body.end()-1;
         auto ed2=body.end();
@@ -73,7 +73,7 @@ void Snake::GrowUp(){
         //设置填充色
         setfillcolor(Snake_Body_Color);
         //绘制
-        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,6,6);
+        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,0,0);
     }
 }
 
