@@ -35,10 +35,11 @@ void Game::Start(){
     //todo 生成糖果
 
     //初始化贪吃蛇
+    int dx=0,dy=5;
+    char pre=' ';
     Snake *snake = new Snake();
     while(1){
-        //todo 添加转向逻辑
-        if(!snake->Move(455,255)){
+        if(!snake->Move(455,255,dx,dy)){
             //游戏结束
             settextcolor(RED);
 
@@ -47,7 +48,23 @@ void Game::Start(){
             getch();
             return;
         }
-        Sleep(20);
+        if(kbhit()){
+            switch (char op=getch()) {
+                case 'w':
+                    if(pre!='s') dx=0, dy=-5,pre=op;
+                    break;
+                case 'a':
+                    if(pre!='d') dx=-5,dy=0,pre=op;
+                    break;
+                case 'd':
+                    if(pre!='a') dx= 5,dy=0,pre=op;
+                    break;
+                case 's':
+                    if(pre!='w') dx=0, dy= 5,pre=op;
+                    break;
+            }
+        }
+        Sleep(100);
     }
 }
 

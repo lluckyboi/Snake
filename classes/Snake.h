@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <graphics.h>
+#include <deque>
 #include "../const/const.h"
 
 #define PII pair<int,int>
@@ -16,18 +17,18 @@ using namespace std;
 
 class Snake {
 private:
-    vector<vector<int>> body;
-    vector<vector<int>> direction;
+    //双向队列
+    deque<vector<int>> body;
     int length;
 public:
     Snake(){
-        //初始化body与方向
-        body.push_back({455,255,0,5});
+        //初始化body
+        //{0,5}下
+        //{0,-5}上
+        //{5,0}}右
+        //{-5,0}}左
+        body.push_front({455,255,0,5});
 
-        direction.push_back({0,5});//下
-        direction.push_back({0,-5});//上
-        direction.push_back({5,0});//右
-        direction.push_back({-5,0});//左
         //初始化长度
         length=1;
 
@@ -38,84 +39,85 @@ public:
     }
 
     //移动
-    bool Move(int candyx,int candyy);
+    bool Move(int candyx, int candyy, int dirctx, int dircty);
     //变长
     void GrowUp();
+    //检查
+    bool checkBody();
 };
 
 void Snake::GrowUp(){
-    //获取末尾元素指针
-    auto p=body.end()-1;
-    int x=*(p->begin());
-    int y=*(p->begin()+1);
-    int dirx=*(p->begin()+2);
-    int diry=*(p->begin()+3);
+    if(length==1){
+        int x=body.back()[0];
+        int y=body.back()[1];
+        int dx=body.back()[2];
+        int dy=body.back()[3];
+        body.push_back({x-dx,y-dy});
+        length++;
+        //设置填充色
+        setfillcolor(Snake_Body_Color);
+        //绘制
+        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,6,6);
+    }else{
+        auto ed1=body.end()-1;
+        auto ed2=body.end();
+        int x=(*ed1)[0];
+        int y=(*ed1)[1];
+        int dx=(*ed1)[0]-(*ed2)[0];
+        int dy=(*ed1)[1]-(*ed2)[1];
 
-    //新增躯干，方向与上一块躯干相同
-    body.push_back({x-dirx,y-diry,dirx,diry});
-    length++;
+        //新增躯干
+        body.push_back({x-dx,y-dy});
+        length++;
 
-    //设置填充色
-    setfillcolor(Snake_Body_Color);
-    //绘制
-    fillroundrect(x-dirx-5,y-diry-5,x-dirx+5,y-diry+5,6,6);
+        //设置填充色
+        setfillcolor(Snake_Body_Color);
+        //绘制
+        fillroundrect(x-dx-5,y-dy-5,x-dx+5,y-dy+5,6,6);
+    }
 }
 
 //边界检查
 bool checkSide(int x,int y){
-    if(!(x>250&&x<650&&y>50&&y<440))return false;
+    if(!(x>245&&x<650&&y>50&&y<440))return false;
     return true;
 }
 
-bool Snake::Move(int candyx,int candyy) {
-    int x=body[0][0];
-    int y=body[0][1];
-    int dirx=body[0][2];
-    int diry=body[0][3];
+//检查是否咬到蛇身
+bool Snake::checkBody(){
+    int hx=body.front()[0];
+    int hy=body.front()[1];
+    for(auto i=body.begin()+2;i<body.end();i++){
+        if( abs(hx-(*i)[0])<2 && abs(hy-(*i)[1]) <2) return false;
+    }
+    return true;
+}
 
-    //清理原先方块
-    clearroundrect(x-5,y-5,x+5,y+5,6,6);
+bool Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
+    //清除队尾
+    int x=body.back()[0];
+    int y=body.back()[1];
+    clearroundrect(x-6,y-6,x+6,y+6,0,0);
+    //弹出队尾
+    body.pop_back();
 
-    //头部先更新
-    body[0][0]+=body[0][2];
-    body[0][1]+=body[0][3];
-
-    //重新绘制
-    x=body[0][0];
-    y=body[0][1];
-    dirx=body[0][2];
-    diry=body[0][3];
-    setfillcolor(RED);
-    fillroundrect(x+dirx-5,y+diry-5,x+dirx+5,y+diry+5,6,6);
+    //压入队首
+    x=body.front()[0];
+    y=body.front()[1];
+    body.push_front({x+dirctx,y+dircty,dirctx,dircty});
+    //绘制新队首
     setfillcolor(Snake_Body_Color);
+    fillroundrect(x-5,y-5,x+5,y+5,0,0);
+    setfillcolor(RED);
+    fillroundrect(x+dirctx-5,y+dircty-5,x+dirctx+5,y+dircty+5,6,6);
 
     //边界检查
     if(!checkSide(x,y))return false;
+    //咬到蛇身检查
+    if(!checkBody())   return false;
 
-    //更新位置
-    for(int i=1;i<length;i++){
-        x=body[i][0];
-        y=body[i][1];
-        dirx=body[i][2];
-        diry=body[i][3];
-        //清理原先方块
-        clearroundrect(x-5,y-5,x+5,y+5,6,6);
-        //更新头
-        body[i][0]+=body[i][2];
-        body[i][1]+=body[i][3];
-
-        //重新绘制
-        x=body[i][0];
-        y=body[i][1];
-        dirx=body[i][2];
-        diry=body[i][3];
-        fillroundrect(x+dirx-5,y+diry-5,x+dirx+5,y+diry+5,6,6);
-    }
-
-    x=body[0][0];
-    y=body[0][1];
-    dirx=body[0][2];
-    diry=body[0][3];
+    x=body.front()[0];
+    y=body.front()[1];
     //判断是否吃到糖果
     if(x>=candyx-5&&x<=candyx+5&&y>=candyy-5&y<=candyy+5) {
         //todo 清除糖果
