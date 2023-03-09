@@ -113,7 +113,13 @@ int Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
     fillroundrect(x+dirctx-5,y+dircty-5,x+dirctx+5,y+dircty+5,6,6);
 
     //边界检查
-    if(!checkSide(x,y))return 0;
+    if(!checkSide(x,y)){
+        if(x<245)body.front()[0]=645;
+        if(x>650)body.front()[0]=250;
+        if(y<50)body.front()[1]=435;
+        if(y>440)body.front()[1]=55;
+        return 3;
+    }
     //咬到蛇身检查
     if(!checkBody())   return 0;
 
@@ -123,6 +129,10 @@ int Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
     if(x>=candyx-8&&x<=candyx+8&&y>=candyy-8&y<=candyy+8) {
         GrowUp();
         return 2;
+    }
+    //重绘地图检查
+    if(checkSide(x,y)&& checkSide(body.back()[0],body.back()[1])){
+        return 4;
     }
     return 1;
 }

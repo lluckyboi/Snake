@@ -44,7 +44,7 @@ void Game::Start(){
     //记分板
     int score=5;
     //初始化贪吃蛇
-    int dx=0,dy=5;
+    int dx=0,dy=5,ffg=0;
     char pre=' ';
     Snake *snake = new Snake();
     while(1){
@@ -72,7 +72,31 @@ void Game::Start(){
             candy->Clear();
             candy->Refresh();
             candy->Draw();
+        }else if(flag==3){
+            map->Draw();
+            candy->Draw();
+            settextstyle(70,0,Default_Font);
+            settextcolor(YELLOW);
+            outtextxy(700,150,"score");
+            clearrectangle(650,220,770,270);
+            char s[10];
+            itoa(score,s,10);
+            outtextxy(700,200,s);
+            ffg=3;
         }
+        if(flag==4&&ffg>0){
+            ffg--;
+            map->Draw();
+            candy->Draw();
+            settextstyle(70,0,Default_Font);
+            settextcolor(YELLOW);
+            outtextxy(700,150,"score");
+            clearrectangle(650,220,770,270);
+            char s[10];
+            itoa(score,s,10);
+            outtextxy(700,200,s);
+        }
+
         if(kbhit()){
             switch (char op=getch()) {
                 case 'w':
