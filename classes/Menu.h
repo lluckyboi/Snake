@@ -131,7 +131,7 @@ void DrawBottom(int x,int y,int w,int h,char* text,int bt_color,int font_color){
 }
 
 //按钮消息
-bool BottomMsg(){
+int BottomMsg(){
     ExMessage msg; //声明一个消息指针
     while (true) {
         //鼠标行为
@@ -143,14 +143,17 @@ bool BottomMsg(){
                     //开始游戏
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)
                     {
-                        return true;
+                        return 1;
                     }
                     //设置游戏
-                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 200 && msg.y <= 200 + 40)
-                        outtextxy(0,0,"wait to develop");
+                    if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 200 && msg.y <= 200 + 40){
+                        outtextxy(0,0,"input speed level 1-5");
+                        int c=getch();
+                        return c;
+                    }
                     //退出游戏
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 320 && msg.y <= 320 + 40)
-                        return false;
+                        return 0;
                 //鼠标悬停
                 case WM_MOUSEMOVE:
                     if (msg.x >= 400 && msg.x <= 400 + 180 && msg.y >= 80 && msg.y <= 80 + 40)

@@ -6,8 +6,37 @@
 #define SNAKE_CANDY_H
 
 
-class Candy {
+#include <ctime>
 
+class Candy {
+private:
+    bool isExt;
+public:
+    int  locx;
+    int  locy;
+    bool IsExt(){return isExt;}
+    Candy(){
+        srand(time(0));
+        locx=0;
+        locy=0;
+        isExt= false;
+    }
+    void Refresh(){
+        if(isExt) return;
+        locx=P_Left+rand()%330;
+        locy=P_Top+rand()%330;
+        isExt= true;
+    }
+    void Eat(){
+        isExt= false;
+    }
+    void Draw(){
+        setfillcolor(YELLOW);
+        fillcircle(locx,locy,5);
+    }
+    void Clear(){
+        clearcircle(locx,locy,6);
+    }
 };
 
 

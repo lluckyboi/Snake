@@ -39,7 +39,7 @@ public:
     }
 
     //移动
-    bool Move(int candyx, int candyy, int dirctx, int dircty);
+    int Move(int candyx, int candyy, int dirctx, int dircty);
     //变长
     void GrowUp();
     //检查
@@ -93,18 +93,19 @@ bool Snake::checkBody(){
     return true;
 }
 
-bool Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
+int Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
     //清除队尾
     int x=body.back()[0];
     int y=body.back()[1];
     clearroundrect(x-6,y-6,x+6,y+6,0,0);
-    //弹出队尾
-    body.pop_back();
+    //弹出队尾 如果只有一个元素，不弹出
+    if(body.back()!=body.front()) body.pop_back();
 
     //压入队首
     x=body.front()[0];
     y=body.front()[1];
     body.push_front({x+dirctx,y+dircty,dirctx,dircty});
+    if(body.front()==body.back()) body.pop_back();
     //绘制新队首
     setfillcolor(Snake_Body_Color);
     fillroundrect(x-5,y-5,x+5,y+5,0,0);
@@ -112,17 +113,17 @@ bool Snake::Move(int candyx,int candyy,int dirctx,int dircty) {
     fillroundrect(x+dirctx-5,y+dircty-5,x+dirctx+5,y+dircty+5,6,6);
 
     //边界检查
-    if(!checkSide(x,y))return false;
+    if(!checkSide(x,y))return 0;
     //咬到蛇身检查
-    if(!checkBody())   return false;
+    if(!checkBody())   return 0;
 
     x=body.front()[0];
     y=body.front()[1];
     //判断是否吃到糖果
-    if(x>=candyx-5&&x<=candyx+5&&y>=candyy-5&y<=candyy+5) {
-        //todo 清除糖果
+    if(x>=candyx-8&&x<=candyx+8&&y>=candyy-8&y<=candyy+8) {
         GrowUp();
+        return 2;
     }
-    return true;
+    return 1;
 }
 #endif //SNAKE_SNAKE_H
